@@ -16,29 +16,24 @@ const modules = modulesFiles.keys().reduce((modules, modulePath) => {
 
 const plugins = [
   createPersistedState({
-    key: 'logisticsAdminMasterLayout',
-    storage: window.sessionStorage,
-    reducer(val) {
-      return {
-        // 只储存state中的...
-        layout: val.layout
-      };
-    }
+    key: 'MathematicalOlympiadUser',
+    storage: window.localStorage,
+    reducer: val => ({user: val.user})
   }),
   createPersistedState({
-    key: 'logisticsAdminMasterToken',
+    key: 'MathematicalOlympiadLayout',
+    storage: window.sessionStorage,
+    reducer: val => ({layout: val.layout})
+  }),
+  createPersistedState({
+    key: 'MathematicalOlympiadToken',
     storage: {
       getItem: key => Cookies.get(key),
       setItem: (key, value) =>
           Cookies.set(key, value, {expires: 7, secure: false}),
       removeItem: key => Cookies.remove(key)
     },
-    reducer(val) {
-      return {
-        token: val.token,
-        userId: val.userId
-      };
-    }
+    reducer: val => ({token: val.token})
   })
 ];
 

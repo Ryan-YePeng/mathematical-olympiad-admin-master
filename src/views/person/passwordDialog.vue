@@ -10,8 +10,8 @@
       <el-form-item label="旧密码:" prop="oldPassword">
         <el-input type="password" v-model="form.oldPassword" autocomplete="off"></el-input>
       </el-form-item>
-      <el-form-item label="新密码:" prop="newPassword">
-        <el-input type="password" v-model="form.newPassword" autocomplete="off"></el-input>
+      <el-form-item label="新密码:" prop="password">
+        <el-input type="password" v-model="form.password" autocomplete="off"></el-input>
       </el-form-item>
       <el-form-item label="确认密码:" prop="checkPassword">
         <el-input type="password" v-model="form.checkPassword" autocomplete="off"></el-input>
@@ -32,7 +32,7 @@
       let validatePass = (rule, value, callback) => {
         if (value === '') {
           callback(new Error('请再次输入新密码'))
-        } else if (value !== this.form.newPassword) {
+        } else if (value !== this.form.password) {
           callback(new Error('两次输入密码不一致!'))
         } else {
           callback()
@@ -43,12 +43,12 @@
         passwordDialogVisible: false,
         form: {
           oldPassword: '',
-          newPassword: '',
+          password: '',
           checkPassword: ''
         },
         rules: {
           oldPassword: {required: true, message: '请输入旧密码', trigger: 'blur'},
-          newPassword: {required: true, message: '请输入新密码', trigger: 'blur'},
+          password: {required: true, message: '请输入新密码', trigger: 'blur'},
           checkPassword: {required: true, validator: validatePass, trigger: 'blur'}
         }
       }
@@ -66,14 +66,15 @@
             this.isLoading = true;
             let data = {
               oldPassword: this.form.oldPassword,
-              newPassword: this.form.newPassword
+              password: this.form.password
             };
             data.u_id = this.userId;
             updatePasswordApi(data).then(result => {
               if (result.data.status === 200) {
                 this.isLoading = false;
-                this.$removeCookiesStorage('logisticsAdminMasterToken');
-                this.$removeSessionStorage('logisticsAdminMasterLayout');
+                this.$removeLocalStorage('MathematicalOlympiadUser');
+                this.$removeCookiesStorage('MathematicalOlympiadToken');
+                this.$removeSessionStorage('MathematicalOlympiadLayout');
                 this.$router.push({name: 'login'});
                 location.reload()
               } else {

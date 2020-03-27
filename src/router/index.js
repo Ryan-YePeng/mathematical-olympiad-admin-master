@@ -3,8 +3,7 @@ import store from '../store/index'
 import NProgress from 'nprogress'
 import 'nprogress/nprogress.css'
 import {isEmpty} from '../utils/common'
-import {getUserApi} from '@/api/person'
-import {menu_level, menu_level0, menu_level1, menu_level2, menu_special} from './menu'
+import {menu} from './menu'
 
 NProgress.configure({showSpinner: false});
 
@@ -67,24 +66,7 @@ function generateRouter(menu) {
 
 export function getRouter() {
   return new Promise(resolve => {
-    let role;
-    let menu;
-    let userId = store.getters.userId;
-    getUserApi(userId).then(result => {
-      let user = result.data.message;
-      store.dispatch('setUser', user);
-      role = user.authorities[0].authority;
-      if (user.is_special) {
-        menu = menu_special;
-      } else if (role === 'level') {
-        menu = menu_level;
-      } else if (role === 'level0') {
-        menu = menu_level0;
-      } else if (role === 'level1') {
-        menu = menu_level1;
-      } else {
-        menu = menu_level2;
-      }
+    window.setTimeout(() => {
       store.dispatch('setMenu', menu);
       generateRouter(menu);
       router.addRoutes([layout]);
@@ -97,7 +79,7 @@ export function getRouter() {
         redirect: "/home"
       }]);
       resolve()
-    });
+    }, 1000)
   });
 }
 

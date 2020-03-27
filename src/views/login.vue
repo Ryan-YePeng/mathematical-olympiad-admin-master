@@ -33,9 +33,11 @@
 <script>
   import {login} from '../api/login'
   import {getRouter} from "../router";
+  import SubmitButton from "@/components/SubmitButton/index";
 
   export default {
     name: "Login",
+    components: {SubmitButton},
     data() {
       return {
         isLoading: false,
@@ -43,6 +45,7 @@
         form: {
           username: '',
           password: '',
+          code: ''
         },
         rules: {
           username: [{required: true, message: '用户名不能为空', trigger: 'blur'}],
@@ -58,15 +61,12 @@
         this.$refs[formName].validate((valid) => {
           if (valid) {
             this.isLoading = true;
-            const data = {};
-            data.username = this.form.username;
-            data.password = this.form.password;
+            const data = {...this.form};
             login(data)
                 .then(result => {
                   const {token} = result.data;
                   const {user} = result.data;
                   this.$store.dispatch('setUser', user);
-                  this.$store.dispatch('setUserId', user.u_id);
                   this.$store.dispatch('setToken', `Bearer ${token}`);
                   // 动态拉取路由和菜单
                   return getRouter();

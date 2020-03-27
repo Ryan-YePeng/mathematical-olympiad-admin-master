@@ -1,7 +1,7 @@
 <template>
   <div ref="home" class="home" :style="'height:' + mainHeight + 'px'" v-show="isShow">
     <div class="container">
-      <h1 class="title minW">老挝韵达快递管理系统</h1>
+      <h1 class="title minW">小学奥数后台管理系统</h1>
     </div>
   </div>
 </template>
@@ -47,7 +47,7 @@
   .home {
     width: 100%;
     height: 100%;
-    background: url('../../assets/logisticsBG.jpg') no-repeat bottom;
+    background: url('../../assets/logisticsBG.png') no-repeat bottom;
     background-size: cover;
 
     .container {

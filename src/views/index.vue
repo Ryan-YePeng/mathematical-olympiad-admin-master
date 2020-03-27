@@ -22,11 +22,7 @@
             <el-dropdown trigger="click" style="cursor: pointer">
               <div class="avatar-box">
                 <el-avatar shape="square" :size="45">
-                  <img v-if="user.is_special" src="../assets/special.jpg" alt="头像"/>
-                  <img v-else-if="level == 'level'" src="../assets/level.jpg" alt="头像"/>
-                  <img v-else-if="level == 'level0'" src="../assets/level0.jpg" alt="头像"/>
-                  <img v-else-if="level == 'level1'" src="../assets/level1.jpg" alt="头像"/>
-                  <img v-else src="../assets/level2.jpg" alt="头像"/>
+                  <img src="../assets/admin.jpg" alt="头像"/>
                 </el-avatar>
                 <i class="el-icon-caret-bottom el-icon--right"></i>
                 <el-dropdown-menu slot="dropdown">
@@ -87,10 +83,6 @@
       'active': function () {
         return this.$store.getters.active
       },
-      'level': function () {
-        let data = this.$store.getters.user;
-        return data.authorities[0]['authority']
-      },
       user() {
         return this.$store.getters.user
       }
@@ -126,8 +118,9 @@
       logout() {
         this.$msgBox('确定注销并退出系统吗？', 'warning').then(() => {
           // 清除缓存
-          this.$removeCookiesStorage('logisticsAdminMasterToken');
-          this.$removeSessionStorage('logisticsAdminMasterLayout');
+          this.$removeLocalStorage('MathematicalOlympiadUser');
+          this.$removeCookiesStorage('MathematicalOlympiadToken');
+          this.$removeSessionStorage('MathematicalOlympiadLayout');
           this.$router.push({name: 'login'});
           location.reload()
         })

@@ -27,6 +27,10 @@ import 'element-ui/lib/theme-chalk/index.css';
 import 'default-passive-events'
 // 组件传值
 import './utils/vueEvent'
+// 自定义组件
+import DeleteButton from '@/components/DeleteButton'
+import SubmitButton from '@/components/SubmitButton'
+import CustomizedPagination from '@/components/Pagination'
 // App
 import App from './App'
 
@@ -38,6 +42,10 @@ Vue.prototype.$$ = $;
 Vue.use(EVueContextmenu);
 // ElementUI
 Vue.use(ElementUI, {size: 'small'});
+// 自定义组件
+Vue.component('DeleteButton', DeleteButton);
+Vue.component('SubmitButton', SubmitButton);
+Vue.component('Pagination', CustomizedPagination);
 
 new Vue({
   router,
