@@ -23,6 +23,8 @@ import EVueContextmenu from 'e-vue-contextmenu'
 import './utils/EUI';
 import ElementUI from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css';
+// 全局样式
+import './styles/global.css'
 // 阻止事件的默认行为
 import 'default-passive-events'
 // 自定义组件

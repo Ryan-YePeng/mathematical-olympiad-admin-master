@@ -1,0 +1,69 @@
+.el-scrollbar__wrap {
+  overflow-x: hidden !important;
+}
+
+.el-select-dropdown__list {
+  margin-bottom: -17px !important;
+}
+
+.clearfix:before,
+.clearfix:after {
+  display: table;
+  content: "";
+}
+
+.clearfix:after {
+  clear: both
+}
+
+.float-right {
+  float: right;
+}
+
+.ml-5 {
+  margin-left: 5px;
+}
+
+.ml-10 {
+  margin-left: 10px;
+}
+
+.ml-15 {
+  margin-left: 15px;
+}
+
+.ml-20 {
+  margin-left: 20px;
+}
+
+.mb-5 {
+  margin-bottom: 5px;
+}
+
+.mb-10 {
+  margin-bottom: 10px;
+}
+
+.mb-15 {
+  margin-bottom: 15px;
+}
+
+.mb-20 {
+  margin-bottom: 20px;
+}
+
+.w-100 {
+  width: 100%;
+}
+
+.w-150 {
+  width: 150px;
+}
+
+.w-175 {
+  width: 175px;
+}
+
+.w-200 {
+  width: 200px;
+}

@@ -1,14 +1,14 @@
 <template>
   <el-scrollbar style="height:100%; background-color: #2f4055" v-show="!isSmall">
     <el-menu
-      :default-active="active"
-      mode="vertical"
-      :collapse="isCollapse"
-      class="el-menu-vertical-demo"
-      background-color="#2f4055"
-      active-text-color="#429ee2"
-      text-color="#becad8"
-      :unique-opened="true"
+            :default-active="active"
+            mode="vertical"
+            :collapse="isCollapse"
+            class="el-menu-vertical-demo"
+            background-color="#2f4055"
+            active-text-color="#429ee2"
+            text-color="#becad8"
+            :unique-opened="true"
     >
       <template v-for="item in menuList">
         <!--一级菜单X-->
@@ -37,7 +37,8 @@
                 <span slot="title">{{citem.name}}</span>
               </template>
               <!--三级菜单X-->
-              <el-menu-item v-if="!titem.children || titem.children.length===0" v-for="titem in citem.children" :key="titem.name"
+              <el-menu-item v-if="!titem.children || titem.children.length===0" v-for="titem in citem.children"
+                            :key="titem.name"
                             :index='titem.name' @click="jump($event, titem.path)">
                 <svg-icon className="svgMenu" :icon-class="titem.icon"/>
                 <span slot="title">{{titem.name}}</span>
@@ -51,7 +52,6 @@
 </template>
 
 <script>
-  import '../../styles/myElementUI.css'
   import ScrollPane from "../scrollpane/index";
 
   export default {

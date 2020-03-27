@@ -8,7 +8,22 @@ module.exports = {
       "icon": "question_bank",
       "path": "question_bank",
       "component": "question_bank",
-      "children": []
+      "children": [
+        {
+          "name": "选择",
+          "icon": "choice",
+          "path": "choice",
+          "component": "choice",
+          "children": []
+        },
+        {
+          "name": "填空",
+          "icon": "subjective",
+          "path": "subjective",
+          "component": "subjective",
+          "children": []
+        }
+      ]
     },
     {
       "name": "视频管理",

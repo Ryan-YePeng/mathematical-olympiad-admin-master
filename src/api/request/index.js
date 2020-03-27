@@ -117,7 +117,7 @@ export const axiosG = url => {
  * @param {String} url 请求地址
  * @description delete，删除单条数据。
  * */
-export const axiosd = url => {
+export const axiosD = url => {
   return new Promise((resolve, reject) => {
     service({
       method: 'delete',
@@ -134,34 +134,11 @@ export const axiosd = url => {
  * @param {Array} param [1, 2, 3]
  * @description delete，删除多条数据。
  * */
-export const axiosds = (url, param) => {
+export const axiosDs = (url, param) => {
   return new Promise((resolve, reject) => {
     service({
       method: 'delete',
       url: `${url}${param.join(',')}`
-    }).then(result => {
-      resolve(result)
-    }).catch(error => {
-      reject(error)
-    })
-  })
-};
-/**
- * @param {String} url 请求地址
- * @param {Array} param [1, 2, 3]
- * @description delete，删除多条数据。
- * */
-export const axiosD = (url, param) => {
-  return new Promise((resolve, reject) => {
-    service({
-      method: 'delete',
-      url: url,
-      params: {
-        ids: param
-      },
-      paramsSerializer: [(params) => {
-        return qs.stringify(params, {indices: false})
-      }]
     }).then(result => {
       resolve(result)
     }).catch(error => {
