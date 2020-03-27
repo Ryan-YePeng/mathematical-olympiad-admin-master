@@ -79,7 +79,7 @@ export function getRouter() {
         redirect: "/home"
       }]);
       resolve()
-    }, 1000)
+    }, 100)
   });
 }
 

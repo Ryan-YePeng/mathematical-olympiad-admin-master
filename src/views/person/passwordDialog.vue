@@ -6,10 +6,7 @@
           append-to-body
           @close="cancel"
           :close-on-click-modal="false">
-    <el-form :model="form" :rules="rules" ref="form" label-width="120px" hide-required-asterisk>
-      <el-form-item label="旧密码:" prop="oldPassword">
-        <el-input type="password" v-model="form.oldPassword" autocomplete="off"></el-input>
-      </el-form-item>
+    <el-form :model="form" :rules="rules" ref="Form" label-width="120px" hide-required-asterisk>
       <el-form-item label="新密码:" prop="password">
         <el-input type="password" v-model="form.password" autocomplete="off"></el-input>
       </el-form-item>
@@ -19,7 +16,7 @@
     </el-form>
     <div slot="footer" class="dialog-footer">
       <el-button @click="cancel">取 消</el-button>
-      <el-button type="primary" @click="submitPasswordForm('form')" :loading="isLoading">确 定</el-button>
+      <submit-button ref="SubmitButton" @submit="submitPasswordForm"></submit-button>
     </div>
   </el-dialog>
 </template>
@@ -39,49 +36,45 @@
         }
       };
       return {
-        isLoading: false,
         passwordDialogVisible: false,
         form: {
-          oldPassword: '',
           password: '',
           checkPassword: ''
         },
         rules: {
-          oldPassword: {required: true, message: '请输入旧密码', trigger: 'blur'},
           password: {required: true, message: '请输入新密码', trigger: 'blur'},
           checkPassword: {required: true, validator: validatePass, trigger: 'blur'}
         }
       }
     },
     computed: {
-      userId() {
-        return this.$store.getters.userId;
+      user() {
+        return this.$store.getters.user;
       }
     },
     methods: {
       // 提交密码表单
-      submitPasswordForm(formName) {
-        this.$refs[formName].validate((valid) => {
+      submitPasswordForm() {
+        this.$refs['Form'].validate((valid) => {
           if (valid) {
-            this.isLoading = true;
+            this.$refs.SubmitButton.start();
             let data = {
-              oldPassword: this.form.oldPassword,
               password: this.form.password
             };
-            data.u_id = this.userId;
+            data.user_id = this.user.user_id;
             updatePasswordApi(data).then(result => {
               if (result.data.status === 200) {
-                this.isLoading = false;
+                this.$refs.SubmitButton.stop();
                 this.$removeLocalStorage('MathematicalOlympiadUser');
                 this.$removeCookiesStorage('MathematicalOlympiadToken');
                 this.$removeSessionStorage('MathematicalOlympiadLayout');
                 this.$router.push({name: 'login'});
                 location.reload()
               } else {
-                this.isLoading = false
+                this.$refs.SubmitButton.stop();
               }
             }).catch(() => {
-              this.isLoading = false
+              this.$refs.SubmitButton.stop();
             })
           } else {
             return false;

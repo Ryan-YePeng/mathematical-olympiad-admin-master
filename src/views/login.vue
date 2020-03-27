@@ -34,6 +34,8 @@
   import {login} from '../api/login'
   import {getRouter} from "../router";
   import SubmitButton from "@/components/SubmitButton/index";
+  import {errorMsg} from "@/utils/EUI";
+  import error404 from "@/views/error/error404";
 
   export default {
     name: "Login",
@@ -64,6 +66,7 @@
             const data = {...this.form};
             login(data)
                 .then(result => {
+                  if (result.status !== 200) throw error();
                   const {token} = result.data;
                   const {user} = result.data;
                   this.$store.dispatch('setUser', user);

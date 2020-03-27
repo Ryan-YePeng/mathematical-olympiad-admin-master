@@ -15,10 +15,6 @@
           <span>{{user.username}}</span>
         </li>
         <li>
-          <span>昵称</span>
-          <span>{{user.nickname}}</span>
-        </li>
-        <li>
           <span>权限</span>
           <span>管理员</span>
         </li>
@@ -40,6 +36,7 @@
 
 <script>
   import PasswordDialog from './passwordDialog'
+  import {updateInfoApi} from '@/api/person'
 
   export default {
     components: {PasswordDialog},
@@ -54,21 +51,14 @@
     computed: {
       'user': function () {
         return this.$store.getters.user
-      },
-      'level': function () {
-        let data = this.$store.getters.user;
-        return data.authorities[0]['authority']
-      },
-      'userId': function () {
-        return this.$store.getters.userId
-      },
+      }
     },
     methods: {
       // 修改密码
       changePassword() {
         const _this = this.$refs.PasswordDialog;
         _this.passwordDialogVisible = true
-      },
+      }
     }
   }
 </script>

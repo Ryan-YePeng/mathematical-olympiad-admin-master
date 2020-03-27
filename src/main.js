@@ -25,8 +25,6 @@ import ElementUI from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css';
 // 阻止事件的默认行为
 import 'default-passive-events'
-// 组件传值
-import './utils/vueEvent'
 // 自定义组件
 import DeleteButton from '@/components/DeleteButton'
 import SubmitButton from '@/components/SubmitButton'

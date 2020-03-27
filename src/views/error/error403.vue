@@ -43,7 +43,7 @@
   .error {
     width: 100%;
     height: 100%;
-    background: url("../../assets/bg2.jpg") no-repeat center fixed;
+    background: url("../../assets/bg.jpg") no-repeat center fixed;
     background-size: cover;
     text-align: center;
     font-family: 'Montserrat', sans-serif;
