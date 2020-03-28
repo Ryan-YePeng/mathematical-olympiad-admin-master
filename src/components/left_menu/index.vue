@@ -26,7 +26,7 @@
           <template v-for="citem in item.children">
             <!--二级菜单X-->
             <el-menu-item v-if="!citem.children || citem.children.length===0" :index='citem.name' :key="citem.name"
-                          @click="jump($event, citem.path)">
+                          @click="jump($event, citem.path)" v-show="!citem.hidden">
               <svg-icon className="svgMenu" :icon-class="citem.icon"/>
               <span slot="title">{{citem.name}}</span>
             </el-menu-item>

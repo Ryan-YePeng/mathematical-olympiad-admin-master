@@ -20,7 +20,7 @@
       <el-table-column prop="nickname" label="昵称"></el-table-column>
       <el-table-column prop="sex" label="性别"></el-table-column>
       <el-table-column prop="grade" label="年级"></el-table-column>
-      <el-table-column prop="user_time" label="创建时间时间"></el-table-column>
+      <el-table-column prop="user_time" label="注册时间"></el-table-column>
       <el-table-column label="操作" align="center">
         <template slot-scope="scope">
           <delete-button

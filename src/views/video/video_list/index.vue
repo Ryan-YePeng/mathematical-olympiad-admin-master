@@ -1,11 +1,11 @@
 <template>
-  <div id="subjective">
-    <el-card class="box-card" v-show="isShow">
+  <div id="video">
+    <el-card class="box-card">
       <div slot="header" class="clearfix">
         <el-select
                 class="w-150"
                 clearable
-                @change="getSubjective"
+                @change="getVideo"
                 v-model="searchGrade">
           <el-option
                   v-for="item in options"
@@ -14,56 +14,57 @@
                   :value="item.value">
           </el-option>
         </el-select>
-        <el-button type="success" @click="getSubjective" class="ml-5">搜索</el-button>
+        <el-button type="success" @click="getVideo" class="ml-5">搜索</el-button>
         <el-button class="float-right" type="primary" @click="add">新增</el-button>
       </div>
       <el-table v-loading="isTableLoading" :data="formData">
-        <el-table-column type="expand">
-          <template slot-scope="props">
-            <el-form label-position="top" inline class="demo-table-expand">
-              <el-form-item label="题目">
-                <div v-html="props.row.question"></div>
-              </el-form-item>
-            </el-form>
-          </template>
-        </el-table-column>
-        <el-table-column label="序号">
+        <el-table-column label="视屏名称" prop="video_name"></el-table-column>
+        <el-table-column label="封面">
           <template slot-scope="scope">
-            <span>题目{{scope.row.subjective_id}}</span>
+            <el-avatar shape="square" :src="baseUrl + scope.row.cover">
+              <img src="../../../assets/noFoundPicture.png"/>
+            </el-avatar>
           </template>
         </el-table-column>
         <el-table-column label="年级" prop="grade"></el-table-column>
-        <el-table-column label="操作" align="center">
+        <el-table-column label="授课老师" prop="teacher"></el-table-column>
+        <el-table-column label="上传时间">
           <template slot-scope="scope">
+            <span>{{scope.row.video_time | formatDate}}</span>
+          </template>
+        </el-table-column>
+        <el-table-column label="操作" align="center" width="180px">
+          <template slot-scope="scope">
+            <el-button type="success" @click="check(scope.row)" icon="el-icon-search"></el-button>
             <el-button type="primary" @click="edit(scope.row)" icon="el-icon-edit"></el-button>
             <delete-button
-                    :ref="scope.row.subjective_id"
-                    :id="scope.row.subjective_id"
-                    @start="deleteSubjective"/>
+                    :ref="scope.row.video_id"
+                    :id="scope.row.video_id"
+                    @start="deleteVideo"/>
           </template>
         </el-table-column>
       </el-table>
-      <pagination ref="Pagination" @getNewData="getSubjective"></pagination>
+      <pagination ref="Pagination" @getNewData="getVideo"></pagination>
     </el-card>
-    <subjective-form ref="SubjectiveForm" @update="getSubjective" @tab="tab" v-show="!isShow"
-                     :options="options"></subjective-form>
+    <add-video ref="AddVideo" @update="getVideo" :options="options"></add-video>
+    <edit-video ref="EditVideo" @update="getVideo" :options="options"></edit-video>
   </div>
 </template>
 
 <script>
-  import {getSubjectiveApi, deleteSubjectiveApi} from '@/api/question'
-  import SubjectiveForm from './form'
+  import {getVideoApi, deleteVideoApi} from '@/api/video'
+  import AddVideo from './add'
+  import EditVideo from './edit'
   import {objectEvaluate} from "@/utils/common";
 
   export default {
-    name: "Completion",
-    components: {SubjectiveForm},
+    name: "VideoList",
+    components: {AddVideo, EditVideo},
     data() {
       return {
         isTableLoading: false,
         formData: [],
         searchGrade: '',
-        isShow: true,
         options: [
           {key: 1, label: '一年级', value: '一年级'},
           {key: 2, label: '二年级', value: '二年级'},
@@ -74,28 +75,30 @@
         ]
       }
     },
+    computed: {
+      baseUrl() {
+        return process.env.VUE_APP_PICTURE_BASE_API
+      }
+    },
     mounted() {
-      this.getSubjective()
+      this.getVideo()
     },
     methods: {
-      tab() {
-        this.isShow = !this.isShow
-      },
-      getSubjective() {
+      getVideo() {
         this.isTableLoading = true;
         let pagination = this.$refs.Pagination;
         let param = `pageNumber=${pagination.current}&pageCount=${pagination.size}&grade=${this.searchGrade}`;
-        getSubjectiveApi(param).then(result => {
+        getVideoApi(param).then(result => {
           this.isTableLoading = false;
           let response = result.data;
           this.formData = response.message;
           pagination.total = response.count;
         })
       },
-      deleteSubjective(id) {
-        deleteSubjectiveApi(id)
+      deleteVideo(id) {
+        deleteVideoApi(id)
             .then(() => {
-              this.getSubjective();
+              this.getVideo();
               this.$refs[id].close()
             })
             .catch(() => {
@@ -103,23 +106,28 @@
             })
       },
       add() {
-        let _this = this.$refs.SubjectiveForm;
-        _this.title = '新增填空题';
-        this.tab()
+        let _this = this.$refs.AddVideo;
+        _this.visible = true
       },
       edit(obj) {
-        let _this = this.$refs.SubjectiveForm;
-        _this.title = '编辑填空题';
+        let _this = this.$refs.EditVideo;
+        _this.imageUrl = this.baseUrl + obj.cover;
+        _this.videoUrl = this.baseUrl + obj.path;
         objectEvaluate(obj, _this.form);
-        _this.$refs.Editor.setContent(obj.question);
-        this.tab()
+        _this.visible = true;
+      },
+      check(obj) {
+        this.$router.push({
+          name: 'question',
+          query: {video_id: obj.video_id}
+        })
       }
     }
   }
 </script>
 
 <style lang="scss">
-  #subjective {
+  #video {
     .demo-table-expand {
       font-size: 0;
     }

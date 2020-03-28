@@ -32,6 +32,7 @@
             <span>题目{{scope.row.choice_id}}</span>
           </template>
         </el-table-column>
+        <el-table-column label="年级" prop="grade"></el-table-column>
         <el-table-column label="操作" align="center">
           <template slot-scope="scope">
             <el-button type="primary" @click="edit(scope.row)" icon="el-icon-edit"></el-button>
