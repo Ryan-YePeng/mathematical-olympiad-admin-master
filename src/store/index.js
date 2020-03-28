@@ -1,6 +1,6 @@
-import Vue from 'vue'
-import Vuex from 'vuex'
-import createPersistedState from 'vuex-persistedstate'
+import Vue from "vue";
+import Vuex from "vuex";
+import createPersistedState from "vuex-persistedstate";
 import * as Cookies from "js-cookie";
 
 Vue.use(Vuex);
@@ -16,28 +16,28 @@ const modules = modulesFiles.keys().reduce((modules, modulePath) => {
 
 const plugins = [
   createPersistedState({
-    key: 'MathematicalOlympiadUser',
+    key: "MathematicalOlympiadUser",
     storage: window.localStorage,
-    reducer: val => ({user: val.user})
+    reducer: val => ({ user: val.user })
   }),
   createPersistedState({
-    key: 'MathematicalOlympiadLayout',
+    key: "MathematicalOlympiadLayout",
     storage: window.sessionStorage,
-    reducer: val => ({layout: val.layout})
+    reducer: val => ({ layout: val.layout })
   }),
   createPersistedState({
-    key: 'MathematicalOlympiadToken',
+    key: "MathematicalOlympiadToken",
     storage: {
       getItem: key => Cookies.get(key),
       setItem: (key, value) =>
-          Cookies.set(key, value, {expires: 7, secure: false}),
+        Cookies.set(key, value, { expires: 7, secure: false }),
       removeItem: key => Cookies.remove(key)
     },
-    reducer: val => ({token: val.token})
+    reducer: val => ({ token: val.token })
   })
 ];
 
 export default new Vuex.Store({
   modules,
   plugins
-})
+});

@@ -1,9 +1,9 @@
 const type = {
-  SET_TOKEN: 'SET_TOKEN'
+  SET_TOKEN: "SET_TOKEN"
 };
 
 const state = {
-  token: ''
+  token: ""
 };
 
 const getters = {
@@ -13,13 +13,13 @@ const getters = {
 const mutations = {
   [type.SET_TOKEN](state, token) {
     if (token) state.token = token;
-    else state.token = ''
+    else state.token = "";
   }
 };
 
 const actions = {
-  setToken: ({commit}, token) => {
-    commit(type.SET_TOKEN, token)
+  setToken: ({ commit }, token) => {
+    commit(type.SET_TOKEN, token);
   }
 };
 
@@ -28,4 +28,4 @@ export default {
   getters,
   mutations,
   actions
-}
+};

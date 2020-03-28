@@ -1,5 +1,5 @@
 const type = {
-  SET_MENU: 'SET_MENU'
+  SET_MENU: "SET_MENU"
 };
 
 const state = {
@@ -13,13 +13,13 @@ const getters = {
 const mutations = {
   [type.SET_MENU](state, menu) {
     if (menu) state.menu = menu;
-    else state.menu = []
+    else state.menu = [];
   }
 };
 
 const actions = {
-  setMenu: ({commit}, menu) => {
-    commit(type.SET_MENU, menu)
+  setMenu: ({ commit }, menu) => {
+    commit(type.SET_MENU, menu);
   }
 };
 
@@ -28,5 +28,4 @@ export default {
   getters,
   mutations,
   actions
-}
-
+};

@@ -1,5 +1,5 @@
 const type = {
-  SET_USER: 'SET_USER'
+  SET_USER: "SET_USER"
 };
 
 const state = {
@@ -13,13 +13,13 @@ const getters = {
 const mutations = {
   [type.SET_USER](state, user) {
     if (user) state.user = user;
-    else state.user = {}
+    else state.user = {};
   }
 };
 
 const actions = {
-  setUser: ({commit}, user) => {
-    commit(type.SET_USER, user)
+  setUser: ({ commit }, user) => {
+    commit(type.SET_USER, user);
   }
 };
 
@@ -28,4 +28,4 @@ export default {
   getters,
   mutations,
   actions
-}
+};

@@ -1,63 +1,63 @@
-import Vue from 'vue'
-import {Message, MessageBox, Notification} from 'element-ui'
+import Vue from "vue";
+import { Message, MessageBox, Notification } from "element-ui";
 
 /**
  * @param {String} msg 提示信息
  */
 export const successMsg = msg => {
-  Message.success(msg)
+  Message.success(msg);
 };
 
 const warnMsg = msg => {
-  Message.warning(msg)
+  Message.warning(msg);
 };
 
 export const errorMsg = msg => {
-  Message.error(msg)
+  Message.error(msg);
 };
 
 const infoMsg = msg => {
-  Message.info(msg)
+  Message.info(msg);
 };
 
 const successNotify = msg => {
   Notification.success({
-    title: '成功',
+    title: "成功",
     message: msg
-  })
+  });
 };
 
 const warnNotify = msg => {
   Notification.warning({
-    title: '警告',
+    title: "警告",
     message: msg
-  })
+  });
 };
 
 const infoNotify = msg => {
   Notification.info({
-    title: '消息',
+    title: "消息",
     message: msg
-  })
+  });
 };
 
 const errorNotify = msg => {
   Notification.error({
-    title: '错误',
+    title: "错误",
     message: msg
-  })
+  });
 };
 
 /**
  * @param {String} text 提示信息
  * @param {String} type 消息框类型(success, info, error, warning)
  */
-const msgBox = (text = '确定执行此操作吗？', type = 'warning') => {
-  return MessageBox.confirm(text, '提示', {
-    confirmButtonText: '确定',
-    cancelButtonText: '取消',
+const msgBox = (text = "确定执行此操作吗？", type = "warning") => {
+  return MessageBox.confirm(text, "提示", {
+    confirmButtonText: "确定",
+    cancelButtonText: "取消",
     type: type
-  })
+  });
 };
 
 /**
@@ -65,7 +65,7 @@ const msgBox = (text = '确定执行此操作吗？', type = 'warning') => {
  * @param {String} time
  * @description 报错信息不重复
  */
-let errorText = '';
+let errorText = "";
 let isForbid = false;
 export const errorMessage = (msg, time = 3000) => {
   if (isForbid && msg === errorText) return;
@@ -92,4 +92,4 @@ Vue.prototype.$prompt = MessageBox.prompt;
 export default {
   successMsg,
   errorMsg
-}
+};

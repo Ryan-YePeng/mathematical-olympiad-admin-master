@@ -1,22 +1,22 @@
-import router from './routers'
-import store from '../store/index'
-import NProgress from 'nprogress'
-import 'nprogress/nprogress.css'
-import {isEmpty} from '../utils/common'
-import {menu} from './menu'
+import router from "./routers";
+import store from "../store/index";
+import NProgress from "nprogress";
+import "nprogress/nprogress.css";
+import { isEmpty } from "../utils/common";
+import { menu } from "./menu";
 
-NProgress.configure({showSpinner: false});
+NProgress.configure({ showSpinner: false });
 
-import index from '../views/index'
-import home from '../views/home/index'
-import person from '../views/person/index'
+import index from "../views/index";
+import home from "../views/home/index";
+import person from "../views/person/index";
 
 const layout = {
-  path: '/index',
+  path: "/index",
   component: index,
   children: [
-    {path: '/home', name: 'home', component: home},
-    {path: '/person', name: 'person', component: person}
+    { path: "/home", name: "home", component: home },
+    { path: "/person", name: "person", component: person }
   ]
 };
 
@@ -29,7 +29,7 @@ function generateRouter(menu) {
     firstObj.path = `/${fistItem.path}`;
     firstObj.name = fistItem.path;
     firstObj.component = () => {
-      return import(`@/views${firstObj.path}/index`)
+      return import(`@/views${firstObj.path}/index`);
     };
     //二级菜单
     if (fistItem.children && fistItem.children.length !== 0) {
@@ -38,7 +38,7 @@ function generateRouter(menu) {
         secondObj.path = `/${fistItem.path}/${secondItem.path}`;
         secondObj.name = secondItem.path;
         secondObj.component = () => {
-          return import(`@/views${secondObj.path}/index`)
+          return import(`@/views${secondObj.path}/index`);
         };
         //三级菜单
         if (secondItem.children && secondItem.children.length !== 0) {
@@ -47,39 +47,43 @@ function generateRouter(menu) {
             thirdObj.path = `/${fistItem.path}/${secondItem.path}/${thirdItem.path}`;
             thirdObj.name = thirdItem.path;
             thirdObj.component = () => {
-              return import(`@/views${thirdObj.path}/index`)
+              return import(`@/views${thirdObj.path}/index`);
             };
             //三级菜单
-            list.push(thirdObj)
-          })
+            list.push(thirdObj);
+          });
         } else {
           //二级菜单
-          list.push(secondObj)
+          list.push(secondObj);
         }
-      })
+      });
     } else {
       //一级菜单
-      list.push(firstObj)
+      list.push(firstObj);
     }
-  })
+  });
 }
 
 export function getRouter() {
   return new Promise(resolve => {
     window.setTimeout(() => {
-      store.dispatch('setMenu', menu);
+      store.dispatch("setMenu", menu);
       generateRouter(menu);
       router.addRoutes([layout]);
-      router.addRoutes([{
-        path: "*",
-        redirect: "/404"
-      }]);
-      router.addRoutes([{
-        path: "",
-        redirect: "/home"
-      }]);
-      resolve()
-    }, 100)
+      router.addRoutes([
+        {
+          path: "*",
+          redirect: "/404"
+        }
+      ]);
+      router.addRoutes([
+        {
+          path: "",
+          redirect: "/home"
+        }
+      ]);
+      resolve();
+    }, 100);
   });
 }
 
@@ -88,29 +92,27 @@ router.beforeEach((to, from, next) => {
   NProgress.start();
   let isLogin = !isEmpty(store.getters.token);
   if (to.path === "/") {
-    isLogin
-        ? next('/home')
-        : next('login');
-    return
+    isLogin ? next("/home") : next("login");
+    return;
   }
   if (to.path === "/login") {
-    next()
+    next();
   } else {
     if (isLogin) {
       if (layout.children.length === 2) {
         getRouter();
-        next()
+        next();
       } else {
-        next()
+        next();
       }
     } else {
-      next('/login')
+      next("/login");
     }
   }
 });
 
 router.afterEach(() => {
-  NProgress.done()
+  NProgress.done();
 });
 
-export default router
+export default router;
