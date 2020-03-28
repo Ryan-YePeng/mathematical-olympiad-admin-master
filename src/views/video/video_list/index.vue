@@ -35,7 +35,7 @@
         </el-table-column>
         <el-table-column label="操作" align="center" width="180px">
           <template slot-scope="scope">
-            <el-button type="success" @click="check(scope.row)" icon="el-icon-search"></el-button>
+            <el-button type="success" @click="check(scope.row)">提问</el-button>
             <el-button type="primary" @click="edit(scope.row)" icon="el-icon-edit"></el-button>
             <delete-button
                     :ref="scope.row.video_id"
@@ -119,7 +119,7 @@
       check(obj) {
         this.$router.push({
           name: 'question',
-          query: {video_id: obj.video_id}
+          params: {video_id: obj.video_id, video_name: obj.video_name}
         })
       }
     }

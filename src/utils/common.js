@@ -31,6 +31,6 @@ export const formatDate = value => {
  * */
 export const objectEvaluate = (data, value) => {
   for (let key in value) {
-    value[key] = data[key]
+    if (data.hasOwnProperty(key)) value[key] = data[key]
   }
 };
