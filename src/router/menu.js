@@ -50,6 +50,14 @@ module.exports = {
           component: "question",
           hidden: true,
           children: []
+        },
+        {
+          name: "提问列表",
+          icon: "consult",
+          path: "consult",
+          component: "consult",
+          hidden: false,
+          children: []
         }
       ]
     },

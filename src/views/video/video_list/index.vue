@@ -36,7 +36,7 @@
         <el-table-column label="授课老师" prop="teacher"></el-table-column>
         <el-table-column label="上传时间">
           <template slot-scope="scope">
-            <span>{{ scope.row.video_time | formatDate }}</span>
+            <span>{{ scope.row.video_time | formatDateTime }}</span>
           </template>
         </el-table-column>
         <el-table-column label="操作" align="center" width="180px">
