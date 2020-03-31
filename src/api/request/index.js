@@ -43,19 +43,25 @@ service.interceptors.response.use(
     return response;
   },
   error => {
-    /* 请求超时！*/
+    /* 请求超时 */
     if (error.toString().includes("timeout")) {
       errorMessage("请求超时！");
       return Promise.reject(error);
     }
-    /* 网络错误！ */
-    let statusText = "";
-    try {
-      statusText = error.response.statusText;
-    } finally {
-      if (statusText === "Internal Server Error") {
-        errorMessage("服务器崩溃，请稍后再试！");
-      }
+    /* 请求中断 */
+    if (
+      error.hasOwnProperty("message") &&
+      error.message === "Request Interruption"
+    ) {
+      return Promise.reject(error);
+    }
+    /* 网络错误 */
+    if (
+      error.response.hasOwnProperty("statusText") &&
+      error.response.statusText === "Internal Server Error"
+    ) {
+      errorMessage("无法连接到服务器！");
+      return Promise.reject(error);
     }
     const { message } = error.response.data;
     const { status } = error.response;
@@ -72,9 +78,7 @@ service.interceptors.response.use(
           type: "warning"
         }
       )
-        .then(() => {
-          router.push({ name: "login" });
-        })
+        .then(() => router.push({ name: "login" }))
         .catch(() => (errorStatus = null));
     } else if (status === 403) {
       /* 403 */
@@ -264,9 +268,12 @@ export const axiosF = (url, param) => {
  * @param {String} url 请求地址
  * @param {Object} param {id: 1, file: [1.png, 2.png]}
  * @param {Function=} callback 回调函数
+ * @param {Object=} source 中断请求
  * @description post，文件格式。
  * */
-export const axiosFs = (url, param, callback) => {
+export const axiosFs = (url, param, callback, source) => {
+  let cancelToken;
+  if (!isEmpty(source)) cancelToken = source.token;
   return new Promise((resolve, reject) => {
     service({
       method: "post",
@@ -279,17 +286,15 @@ export const axiosFs = (url, param, callback) => {
         data => {
           const formData = new FormData();
           for (let key in data) {
-            if (data[key] instanceof Array) {
-              for (let i = 0; i < data[key].length; i++) {
+            if (data[key] instanceof Array)
+              for (let i = 0; i < data[key].length; i++)
                 formData.append(key, data[key][i]);
-              }
-            } else {
-              formData.append(key, data[key]);
-            }
+            else formData.append(key, data[key]);
           }
           return formData;
         }
       ],
+      cancelToken: cancelToken,
       onUploadProgress: progress => {
         if (!isEmpty(callback))
           callback(Math.round((progress.loaded / progress.total) * 100));

@@ -17,18 +17,21 @@
       :percentage="percentage"
       :color="customColor"
     ></el-progress>
+    <el-button @click="cancelUpload">取消上传</el-button>
   </div>
 </template>
 
 <script>
 import { uploadFileApi } from "@/api/file";
+import axios from "axios";
 
 export default {
   name: "VideoUploader",
   props: {
     videoUrl: {
       type: String,
-      default: ""
+      default: "",
+      source: null
     }
   },
   data() {
@@ -47,6 +50,9 @@ export default {
     videoUrl(value) {
       this.url = value;
     }
+  },
+  mounted() {
+    this.reset();
   },
   methods: {
     clearFiles() {
@@ -69,17 +75,16 @@ export default {
         type !== "mkv"
       ) {
         this.$errorMsg("上传视屏只能是 AVI、 MP4、 FLV、 WMV，MKV 格式!");
-        return false;
+        return;
       }
       if (size > 40) {
         this.$errorMsg("上传视屏大小不能超过 40MB!");
-        return false;
+        return;
       }
       this.isLoading = true;
-      uploadFileApi({ pic: file }, this.update)
+      uploadFileApi({ pic: file }, this.update, this.source)
         .then(result => {
-          this.isLoading = false;
-          this.percentage = 0;
+          this.reset();
           let response = result.data;
           if (response.status === 200) {
             this.$emit("getVideo", response.path);
@@ -88,10 +93,24 @@ export default {
             this.$successMsg("上传失败");
           }
         })
-        .catch(() => {
-          this.isLoading = false;
-          this.percentage = 0;
+        .catch(error => {
+          if (
+            axios.isCancel(error) &&
+            error.message === "Request Interruption"
+          ) {
+            this.$successMsg("取消上传成功");
+          }
+          this.reset();
         });
+    },
+    reset() {
+      this.isLoading = false;
+      this.percentage = 0;
+      let CancelToken = axios.CancelToken;
+      this.source = CancelToken.source();
+    },
+    cancelUpload() {
+      this.source.cancel("Request Interruption");
     },
     update(value) {
       this.percentage = value;
