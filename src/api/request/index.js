@@ -14,10 +14,9 @@ const service = axios.create({
   withCredentials: true
 });
 
+// 请求拦截
 service.interceptors.request.use(
-  //请求拦截
   config => {
-    //成功
     let token = store.getters.token;
     let url = config.url;
     if (isAddToken(url)) {
@@ -26,16 +25,14 @@ service.interceptors.request.use(
     return config;
   },
   error => {
-    //错误
     errorMessage("请求错误！");
     return Promise.reject(error);
   }
 );
 
+// 响应拦截
 service.interceptors.response.use(
-  //响应拦截
   response => {
-    //成功
     const { message, status } = response.data;
     if (!isEmpty(message) && status === 200 && typeof message == "string") {
       successMsg(message);
@@ -46,7 +43,6 @@ service.interceptors.response.use(
     return response;
   },
   error => {
-    //错误
     /* 请求超时！*/
     if (error.toString().includes("timeout")) {
       errorMessage("请求超时！");
@@ -267,9 +263,10 @@ export const axiosF = (url, param) => {
 /**
  * @param {String} url 请求地址
  * @param {Object} param {id: 1, file: [1.png, 2.png]}
+ * @param {Function=} callback 回调函数
  * @description post，文件格式。
  * */
-export const axiosFs = (url, param) => {
+export const axiosFs = (url, param, callback) => {
   return new Promise((resolve, reject) => {
     service({
       method: "post",
@@ -292,7 +289,10 @@ export const axiosFs = (url, param) => {
           }
           return formData;
         }
-      ]
+      ],
+      onUploadProgress: progress => {
+        if (!isEmpty(callback)) callback(Math.round(progress.loaded / progress.total * 100))
+      }
     })
       .then(result => {
         resolve(result);

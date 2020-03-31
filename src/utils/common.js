@@ -1,5 +1,5 @@
 /**
- * @param {String} value
+ * @param value
  * @return {Boolean}
  * @description 判断是否为空
  * */

@@ -57,12 +57,8 @@
       </el-table>
       <pagination ref="Pagination" @getNewData="getVideo"></pagination>
     </el-card>
-    <add-video ref="AddVideo" @update="getVideo" :options="options"></add-video>
-    <edit-video
-      ref="EditVideo"
-      @update="getVideo"
-      :options="options"
-    ></edit-video>
+    <add-video ref="AddVideo" @update="getVideo" :options="options"/>
+    <edit-video ref="EditVideo" @update="getVideo" :options="options"/>
   </div>
 </template>
 
@@ -126,9 +122,9 @@ export default {
     },
     edit(obj) {
       let _this = this.$refs.EditVideo;
+      objectEvaluate(obj, _this.form);
       _this.imageUrl = this.baseUrl + obj.cover;
       _this.videoUrl = this.baseUrl + obj.path;
-      objectEvaluate(obj, _this.form);
       _this.visible = true;
     },
     check(obj) {
