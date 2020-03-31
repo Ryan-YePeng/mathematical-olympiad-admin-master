@@ -291,7 +291,8 @@ export const axiosFs = (url, param, callback) => {
         }
       ],
       onUploadProgress: progress => {
-        if (!isEmpty(callback)) callback(Math.round(progress.loaded / progress.total * 100))
+        if (!isEmpty(callback))
+          callback(Math.round((progress.loaded / progress.total) * 100));
       }
     })
       .then(result => {

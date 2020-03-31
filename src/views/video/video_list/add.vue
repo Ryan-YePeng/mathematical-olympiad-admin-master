@@ -39,12 +39,12 @@
       <el-row>
         <el-col :span="12">
           <el-form-item label="视频封面" prop="cover">
-            <image-uploader ref="ImageUploader" @getImage="getImage"/>
+            <image-uploader ref="ImageUploader" @getImage="getImage" />
           </el-form-item>
         </el-col>
         <el-col :span="12">
           <el-form-item label="视频" prop="path">
-            <video-uploader ref="VideoUploader" @getVideo="getVideo"/>
+            <video-uploader ref="VideoUploader" @getVideo="getVideo" />
           </el-form-item>
         </el-col>
       </el-row>
@@ -58,12 +58,12 @@
 
 <script>
 import { addVideoApi } from "@/api/video";
-import ImageUploader from '@/components/ImageUploader'
+import ImageUploader from "@/components/ImageUploader";
 import VideoUploader from "@/components/VideoUploader";
 
 export default {
   name: "AddVideo",
-  components: {VideoUploader, ImageUploader},
+  components: { VideoUploader, ImageUploader },
   props: ["options"],
   data() {
     return {
@@ -84,10 +84,10 @@ export default {
   },
   methods: {
     getImage(value) {
-      this.form.cover = value
+      this.form.cover = value;
     },
     getVideo(value) {
-      this.form.path = value
+      this.form.path = value;
     },
     submitForm() {
       this.$refs["Form"].validate(valid => {
@@ -115,6 +115,4 @@ export default {
 };
 </script>
 
-<style scoped>
-
-</style>
+<style scoped></style>

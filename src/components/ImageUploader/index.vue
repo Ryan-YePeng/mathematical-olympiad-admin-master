@@ -1,111 +1,113 @@
 <template>
   <el-upload
-          v-loading="isLoading"
-          ref="ImageUploader"
-          class="image-uploader"
-          action="image-upload"
-          accept='.jpg,.png'
-          :http-request="uploadFile"
-          :show-file-list="false"
+    v-loading="isLoading"
+    ref="ImageUploader"
+    class="image-uploader"
+    action="image-upload"
+    accept=".jpg,.png"
+    :http-request="uploadFile"
+    :show-file-list="false"
   >
-    <img v-if="url" :src="url" class="custom-image"/>
+    <img v-if="url" :src="url" class="custom-image" />
     <i v-else class="el-icon-plus image-uploader-icon"></i>
   </el-upload>
 </template>
 
 <script>
-  import {uploadFileApi} from "@/api/file";
+import { uploadFileApi } from "@/api/file";
 
-  export default {
-    name: "ImageUploader",
-    props: {
-      imageUrl: {
-        type: String,
-        default: ""
-      }
+export default {
+  name: "ImageUploader",
+  props: {
+    imageUrl: {
+      type: String,
+      default: ""
+    }
+  },
+  data() {
+    return {
+      isLoading: false,
+      url: ""
+    };
+  },
+  watch: {
+    imageUrl(value) {
+      this.url = value;
+    }
+  },
+  methods: {
+    clearFiles() {
+      this.url = "";
+      this.$refs.ImageUploader.clearFiles();
     },
-    data() {
-      return {
-        isLoading: false,
-        url: ''
+    /* 自定义上传 */
+    uploadFile(param) {
+      const { file } = param;
+      const type = file.name
+        .substring(file.name.lastIndexOf(".") + 1)
+        .toLowerCase();
+      const size = file.size / 1024 / 1024;
+      if (type !== "jpg" && type !== "png") {
+        this.$errorMsg("上传视屏封面只能是 JPG, PNG 格式!");
+        return;
       }
-    },
-    watch: {
-      imageUrl(value) {
-        this.url = value
+      if (size > 2) {
+        this.$errorMsg("上传视屏封面大小不能超过 2MB!");
+        return;
       }
-    },
-    methods: {
-      clearFiles() {
-        this.url = "";
-        this.$refs.ImageUploader.clearFiles()
-      },
-      /* 自定义上传 */
-      uploadFile(param) {
-        const {file} = param;
-        const type = file.name
-            .substring(file.name.lastIndexOf(".") + 1)
-            .toLowerCase();
-        const size = file.size / 1024 / 1024;
-        if (type !== "jpg" && type !== "png") {
-          this.$errorMsg("上传视屏封面只能是 JPG, PNG 格式!");
-          return
-        }
-        if (size > 2) {
-          this.$errorMsg("上传视屏封面大小不能超过 2MB!");
-          return
-        }
-        this.isLoading = true;
-        uploadFileApi({pic: file}).then(result => {
+      this.isLoading = true;
+      uploadFileApi({ pic: file })
+        .then(result => {
           this.isLoading = false;
           let response = result.data;
           if (response.status === 200) {
-            this.$emit('getImage', response.path);
-            this.url = URL.createObjectURL(file)
+            this.$emit("getImage", response.path);
+            this.url = URL.createObjectURL(file);
           } else {
             this.$successMsg("上传失败");
           }
-        }).catch(() => {
-          this.isLoading = false;
         })
-      }
+        .catch(() => {
+          this.isLoading = false;
+        });
     }
   }
+};
 </script>
 
 <style lang="scss">
-  .image-uploader .el-upload {
-    border: 1px dashed #d9d9d9;
-    border-radius: 6px;
-    cursor: pointer;
-    position: relative;
-    overflow: hidden;
-  }
+.image-uploader .el-upload {
+  border: 1px dashed #d9d9d9;
+  border-radius: 6px;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+}
 
-  .image-uploader .el-upload:hover {
-    border-color: #409eff;
-  }
+.image-uploader .el-upload:hover {
+  border-color: #409eff;
+}
 
-  .image-uploader-icon {
-    font-size: 28px;
-    color: #8c939d;
-    width: 178px;
-    height: 178px;
-    line-height: 178px;
-    text-align: center;
-  }
+.image-uploader-icon {
+  font-size: 28px;
+  color: #8c939d;
+  width: 178px;
+  height: 178px;
+  line-height: 178px;
+  text-align: center;
+}
 
-  .custom-image {
-    width: 178px;
-    height: 178px;
-    display: block;
-  }
+.custom-image {
+  width: 178px;
+  height: 178px;
+  display: block;
+}
 
-  .image-uploader {
-    .el-loading-mask {
-      width: 168px;
-      height: 168px;
-      margin: 5px;
-    }
+.image-uploader {
+  .el-loading-mask {
+    width: 168px;
+    height: 168px;
+    margin: 5px;
   }
+}
 </style>

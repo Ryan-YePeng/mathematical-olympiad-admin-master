@@ -5,20 +5,20 @@
         <template slot-scope="props">
           <el-table :data="props.row.answer">
             <el-table-column
-                    prop="message"
-                    label="回复内容"
-                    :show-overflow-tooltip="true"
+              prop="message"
+              label="回复内容"
+              :show-overflow-tooltip="true"
             ></el-table-column>
             <el-table-column
-                    prop="answer_time"
-                    label="回复时间"
+              prop="answer_time"
+              label="回复时间"
             ></el-table-column>
             <el-table-column label="操作" align="center">
               <template slot-scope="scope">
                 <delete-button
-                        :ref="'answer' + scope.row.answer_id"
-                        :id="scope.row.answer_id"
-                        @start="deleteAnswer"
+                  :ref="'answer' + scope.row.answer_id"
+                  :id="scope.row.answer_id"
+                  @start="deleteAnswer"
                 />
               </template>
             </el-table-column>
@@ -30,26 +30,25 @@
       <el-table-column label="头像">
         <template slot-scope="scope">
           <el-avatar shape="square" :src="baseUrl + scope.row.avatar">
-            <img src="../../../assets/noFoundPicture.png"/>
+            <img src="../../../assets/noFoundPicture.png" />
           </el-avatar>
         </template>
       </el-table-column>
       <el-table-column
-              prop="message"
-              label="提问内容"
-              :show-overflow-tooltip="true"
+        prop="message"
+        label="提问内容"
+        :show-overflow-tooltip="true"
       ></el-table-column>
       <el-table-column prop="question_time" label="提问时间"></el-table-column>
       <el-table-column label="操作" align="center">
         <template slot-scope="scope">
           <el-button type="primary" @click="reply(scope.row.question_id)"
-          >回复
-          </el-button
-          >
+            >回复
+          </el-button>
           <delete-button
-                  :ref="scope.row.question_id"
-                  :id="scope.row.question_id"
-                  @start="deleteQuestion"
+            :ref="scope.row.question_id"
+            :id="scope.row.question_id"
+            @start="deleteQuestion"
           />
         </template>
       </el-table-column>
@@ -60,71 +59,71 @@
 </template>
 
 <script>
-  import {
-    getQuestionApi,
-    deleteQuestionApi,
-    deleteAnswerApi
-  } from "@/api/question";
-  import ReplyForm from "./form";
+import {
+  getQuestionApi,
+  deleteQuestionApi,
+  deleteAnswerApi
+} from "@/api/question";
+import ReplyForm from "./form";
 
-  export default {
-    name: "Consult",
-    components: {ReplyForm},
-    data() {
-      return {
-        isTableLoading: false,
-        video_name: "",
-        formData: []
-      };
-    },
-    computed: {
-      baseUrl() {
-        return process.env.VUE_APP_PICTURE_BASE_API;
-      }
-    },
-    mounted() {
-      this.video_name = this.$route.params.video_name;
-      this.getQuestion();
-    },
-    methods: {
-      getQuestion() {
-        this.isTableLoading = true;
-        let pagination = this.$refs.Pagination;
-        let param = `pageNumber=${pagination.current}&pageCount=${pagination.size}&video_id=0`;
-        getQuestionApi(param).then(result => {
-          this.isTableLoading = false;
-          let response = result.data;
-          this.formData = response.message;
-          pagination.total = response.count;
-        });
-      },
-      reply(id) {
-        let _this = this.$refs.ReplyForm;
-        _this.form.question_id = id;
-        _this.visible = true;
-      },
-      deleteQuestion(id) {
-        deleteQuestionApi(id)
-            .then(() => {
-              this.getQuestion();
-              this.$refs[id].close();
-            })
-            .catch(() => {
-              this.$refs[id].stop();
-            });
-      },
-      deleteAnswer(id) {
-        deleteAnswerApi(id)
-            .then(() => {
-              this.getQuestion();
-              this.$refs["answer" + id].close();
-            })
-            .catch(() => {
-              this.$refs["answer" + id].stop();
-            });
-      }
+export default {
+  name: "Consult",
+  components: { ReplyForm },
+  data() {
+    return {
+      isTableLoading: false,
+      video_name: "",
+      formData: []
+    };
+  },
+  computed: {
+    baseUrl() {
+      return process.env.VUE_APP_PICTURE_BASE_API;
     }
-  };
+  },
+  mounted() {
+    this.video_name = this.$route.params.video_name;
+    this.getQuestion();
+  },
+  methods: {
+    getQuestion() {
+      this.isTableLoading = true;
+      let pagination = this.$refs.Pagination;
+      let param = `pageNumber=${pagination.current}&pageCount=${pagination.size}&video_id=0`;
+      getQuestionApi(param).then(result => {
+        this.isTableLoading = false;
+        let response = result.data;
+        this.formData = response.message;
+        pagination.total = response.count;
+      });
+    },
+    reply(id) {
+      let _this = this.$refs.ReplyForm;
+      _this.form.question_id = id;
+      _this.visible = true;
+    },
+    deleteQuestion(id) {
+      deleteQuestionApi(id)
+        .then(() => {
+          this.getQuestion();
+          this.$refs[id].close();
+        })
+        .catch(() => {
+          this.$refs[id].stop();
+        });
+    },
+    deleteAnswer(id) {
+      deleteAnswerApi(id)
+        .then(() => {
+          this.getQuestion();
+          this.$refs["answer" + id].close();
+        })
+        .catch(() => {
+          this.$refs["answer" + id].stop();
+        });
+    }
+  }
+};
 </script>
 
 <style scoped></style>

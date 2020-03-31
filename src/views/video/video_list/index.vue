@@ -57,8 +57,8 @@
       </el-table>
       <pagination ref="Pagination" @getNewData="getVideo"></pagination>
     </el-card>
-    <add-video ref="AddVideo" @update="getVideo" :options="options"/>
-    <edit-video ref="EditVideo" @update="getVideo" :options="options"/>
+    <add-video ref="AddVideo" @update="getVideo" :options="options" />
+    <edit-video ref="EditVideo" @update="getVideo" :options="options" />
   </div>
 </template>
 
