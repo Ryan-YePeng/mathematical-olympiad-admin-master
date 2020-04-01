@@ -4,7 +4,7 @@
     ref="ImageUploader"
     class="image-uploader"
     action="image-upload"
-    accept=".jpg,.png"
+    :accept="accept"
     :http-request="uploadFile"
     :show-file-list="false"
   >
@@ -27,6 +27,7 @@ export default {
   data() {
     return {
       isLoading: false,
+      accept: ".jpg, .png",
       url: ""
     };
   },
@@ -36,10 +37,6 @@ export default {
     }
   },
   methods: {
-    clearFiles() {
-      this.url = "";
-      this.$refs.ImageUploader.clearFiles();
-    },
     /* 自定义上传 */
     uploadFile(param) {
       const { file } = param;
@@ -47,8 +44,9 @@ export default {
         .substring(file.name.lastIndexOf(".") + 1)
         .toLowerCase();
       const size = file.size / 1024 / 1024;
-      if (type !== "jpg" && type !== "png") {
-        this.$errorMsg("上传视屏封面只能是 JPG, PNG 格式!");
+      if (!this.accept.includes(type)) {
+        let accept = this.accept.replace(/[.]|[,]/g, "");
+        this.$errorMsg(`上传视屏封面只能是 ${accept} 格式!`);
         return;
       }
       if (size > 2) {
@@ -70,6 +68,12 @@ export default {
         .catch(() => {
           this.isLoading = false;
         });
+    },
+    // 清理文件
+    clearFiles() {
+      this.url = "";
+      this.isLoading = false;
+      this.$refs.ImageUploader.clearFiles();
     }
   }
 };
