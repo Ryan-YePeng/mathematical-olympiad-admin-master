@@ -1,8 +1,8 @@
 import axios from "axios";
 import qs from "qs";
-import { MessageBox } from "element-ui";
-import { errorMessage, successMsg, errorMsg } from "@/utils/EUI";
-import { isEmpty } from "@/utils/common";
+import {MessageBox} from "element-ui";
+import {errorMessage, successMsg, errorMsg} from "@/utils/EUI";
+import {isEmpty} from "@/utils/common";
 import router from "@/router";
 import store from "@/store";
 
@@ -33,7 +33,7 @@ service.interceptors.request.use(
 // 响应拦截
 service.interceptors.response.use(
   response => {
-    const { message, status } = response.data;
+    const {message, status} = response.data;
     if (!isEmpty(message) && status === 200 && typeof message == "string") {
       successMsg(message);
     }
@@ -63,8 +63,8 @@ service.interceptors.response.use(
       errorMessage("无法连接到服务器！");
       return Promise.reject(error);
     }
-    const { message } = error.response.data;
-    const { status } = error.response;
+    const {message} = error.response.data;
+    const {status} = error.response;
     /* 401 */
     if (status === 401) {
       if (errorStatus === status) return;
@@ -78,11 +78,11 @@ service.interceptors.response.use(
           type: "warning"
         }
       )
-        .then(() => router.push({ name: "login" }))
+        .then(() => router.push({name: "login"}))
         .catch(() => (errorStatus = null));
     } else if (status === 403) {
       /* 403 */
-      router.push({ name: "error403" });
+      router.push({name: "error403"});
     } else {
       /* elseStatus */
       if (!isEmpty(message)) errorMsg(message);
@@ -279,6 +279,7 @@ export const axiosFs = (url, param, callback, source) => {
       method: "post",
       url: url,
       data: param,
+      timeout: 600000,
       headers: {
         "Content-Type": "multipart/form-data"
       },

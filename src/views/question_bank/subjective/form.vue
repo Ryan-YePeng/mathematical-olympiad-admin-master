@@ -24,6 +24,14 @@
       <el-form-item label="题目">
         <custom-editor ref="Editor"></custom-editor>
       </el-form-item>
+      <el-form-item label="分值" prop="score">
+        <el-input-number
+          v-model="form.score"
+          controls-position="right"
+          :min="1"
+          :max="100"
+        ></el-input-number>
+      </el-form-item>
       <el-form-item label="答案" prop="answer">
         <el-input v-model="form.answer"></el-input>
       </el-form-item>
@@ -55,10 +63,12 @@ export default {
         subjective_id: null,
         grade: "一年级",
         question: "",
+        score: 0,
         answer: "",
         parsing: ""
       },
       rules: {
+        score: { required: true, message: "请输入分值", trigger: "change" },
         answer: { required: true, message: "请输入答案", trigger: "blur" },
         parsing: { required: true, message: "请输入解析", trigger: "blur" }
       }

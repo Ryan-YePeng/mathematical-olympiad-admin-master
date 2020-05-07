@@ -24,6 +24,14 @@
       <el-form-item label="题目">
         <custom-editor ref="Editor"></custom-editor>
       </el-form-item>
+      <el-form-item label="分值" prop="score">
+        <el-input-number
+          v-model="form.score"
+          controls-position="right"
+          :min="1"
+          :max="100"
+        ></el-input-number>
+      </el-form-item>
       <el-form-item label="选项A" prop="optionsA">
         <el-input v-model="form.optionsA"></el-input>
       </el-form-item>
@@ -72,6 +80,7 @@ export default {
         choice_id: null,
         grade: "一年级",
         question: "",
+        score: 0,
         optionsA: "",
         optionsB: "",
         optionsC: "",
@@ -80,6 +89,7 @@ export default {
         parsing: ""
       },
       rules: {
+        score: { required: true, message: "请输入分值", trigger: "change" },
         optionsA: { required: true, message: "请输入选项", trigger: "blur" },
         optionsB: { required: true, message: "请输入选项", trigger: "blur" },
         optionsC: { required: true, message: "请输入选项", trigger: "blur" },

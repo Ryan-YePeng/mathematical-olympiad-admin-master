@@ -36,7 +36,7 @@ module.exports = {
       hidden: false,
       children: [
         {
-          name: "视屏列表",
+          name: "视频列表",
           icon: "video_list",
           path: "video_list",
           component: "video_list",

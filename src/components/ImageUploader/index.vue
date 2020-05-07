@@ -46,11 +46,11 @@ export default {
       const size = file.size / 1024 / 1024;
       if (!this.accept.includes(type)) {
         let accept = this.accept.replace(/[.]|[,]/g, "");
-        this.$errorMsg(`上传视屏封面只能是 ${accept} 格式!`);
+        this.$errorMsg(`上传视频封面只能是 ${accept} 格式!`);
         return;
       }
       if (size > 2) {
-        this.$errorMsg("上传视屏封面大小不能超过 2MB!");
+        this.$errorMsg("上传视频封面大小不能超过 2MB!");
         return;
       }
       this.isLoading = true;

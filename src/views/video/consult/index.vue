@@ -25,7 +25,7 @@
           </el-table>
         </template>
       </el-table-column>
-      <el-table-column prop="video_name" label="视屏名称"></el-table-column>
+      <el-table-column prop="video_name" label="视频名称"></el-table-column>
       <el-table-column prop="username" label="账号"></el-table-column>
       <el-table-column label="头像">
         <template slot-scope="scope">

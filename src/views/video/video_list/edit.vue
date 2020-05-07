@@ -26,7 +26,7 @@
       </el-form-item>
       <el-row>
         <el-col :span="12">
-          <el-form-item label="视屏名称" prop="video_name">
+          <el-form-item label="视频名称" prop="video_name">
             <el-input v-model="form.video_name"></el-input>
           </el-form-item>
         </el-col>

@@ -24,7 +24,7 @@
         >
       </div>
       <el-table v-loading="isTableLoading" :data="formData">
-        <el-table-column label="视屏名称" prop="video_name"></el-table-column>
+        <el-table-column label="视频名称" prop="video_name"></el-table-column>
         <el-table-column label="封面">
           <template slot-scope="scope">
             <el-avatar shape="square" :src="baseUrl + scope.row.cover">
